@@ -20,6 +20,15 @@ import {
 import nasiGulaiImg from "@/assets/nasi-gulai.jpg";
 import pisangGorengImg from "@/assets/pisang-goreng.jpg";
 import icedTeaImg from "@/assets/iced-tea.jpg";
+import nasiGulaiCutout from "@/assets/nasi-gulai-cutout.png";
+import pisangGorengCutout from "@/assets/pisang-goreng-cutout.png";
+import icedTeaCutout from "@/assets/iced-tea-cutout.png";
+
+const CUTOUTS: Record<string, string> = {
+  [nasiGulaiImg]: nasiGulaiCutout,
+  [pisangGorengImg]: pisangGorengCutout,
+  [icedTeaImg]: icedTeaCutout,
+};
 
 export const Route = createFileRoute("/")({
   head: () => ({
