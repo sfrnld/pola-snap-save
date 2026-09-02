@@ -91,6 +91,18 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Die-cut sticker: thick white outline following the food's shape + soft lift */
+@utility sticker-die-cut {
+  filter:
+    drop-shadow(4px 0 0 var(--card)) drop-shadow(-4px 0 0 var(--card))
+    drop-shadow(0 4px 0 var(--card)) drop-shadow(0 -4px 0 var(--card))
+    drop-shadow(3px 3px 0 var(--card)) drop-shadow(-3px 3px 0 var(--card))
+    drop-shadow(3px -3px 0 var(--card)) drop-shadow(-3px -3px 0 var(--card))
+    drop-shadow(2px 0 0 var(--card)) drop-shadow(-2px 0 0 var(--card))
+    drop-shadow(0 2px 0 var(--card)) drop-shadow(0 -2px 0 var(--card))
+    drop-shadow(0 14px 16px rgba(60, 45, 30, 0.35));
+}
+
 :root {
   --radius: 1rem;
   --background: oklch(0.97 0.015 95);
