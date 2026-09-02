@@ -20,6 +20,15 @@ import {
 import nasiGulaiImg from "@/assets/nasi-gulai.jpg";
 import pisangGorengImg from "@/assets/pisang-goreng.jpg";
 import icedTeaImg from "@/assets/iced-tea.jpg";
+import nasiGulaiCutout from "@/assets/nasi-gulai-cutout.png";
+import pisangGorengCutout from "@/assets/pisang-goreng-cutout.png";
+import icedTeaCutout from "@/assets/iced-tea-cutout.png";
+
+const CUTOUTS: Record<string, string> = {
+  [nasiGulaiImg]: nasiGulaiCutout,
+  [pisangGorengImg]: pisangGorengCutout,
+  [icedTeaImg]: icedTeaCutout,
+};
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -137,17 +146,18 @@ const EXTRA_ITEMS: { name: string; kcal: number }[] = [
 
 function Sticker({ meal, size = "md" }: { meal: Meal; size?: "md" | "lg" }) {
   const dims = size === "lg" ? "h-64 w-64" : "h-24 w-24";
+  const imgDims = size === "lg" ? "max-h-52 max-w-52" : "max-h-[4.5rem] max-w-[4.5rem]";
   return (
     <div
       className={`${dims} ${STICKER_BG[meal.bg]} relative flex shrink-0 items-center justify-center rounded-[2rem]`}
     >
       <img
-        src={meal.image}
+        src={CUTOUTS[meal.image] ?? meal.image}
         alt={meal.title}
         loading="lazy"
-        width={1024}
-        height={1024}
-        className={`${size === "lg" ? "h-52 w-52 border-8" : "h-16 w-16 border-4"} rounded-full border-card object-cover shadow-[0_10px_24px_-8px_rgba(60,45,30,0.45)]`}
+        width={804}
+        height={746}
+        className={`${imgDims} object-contain sticker-die-cut`}
       />
       <Sparkles
         className={`absolute ${size === "lg" ? "right-5 top-5 h-5 w-5" : "right-2.5 top-2.5 h-3 w-3"} text-tomato/70`}
