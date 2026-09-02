@@ -510,7 +510,7 @@ function ReviewScreen({
     );
 
   const addExtra = () => {
-    const extra = EXTRA_ITEMS[extraIdx % EXTRA_ITEMS.length];
+    const extra = EXTRA_ITEMS[extraIdx % EXTRA_ITEMS.length]!;
     setExtraIdx((n) => n + 1);
     setItems((list) => [
       ...list,
