@@ -58,7 +58,7 @@ function PolaApp() {
   const [state, setState] = useState<PolaState>(loadState);
   const [tab, setTab] = useState<Tab>("home");
   const [screen, setScreen] = useState<Screen>(() =>
-    loadState().onboarded ? { name: "detail", mealId: "" } && ({ name: "home" } as never) : { name: "onboarding" },
+    loadState().onboarded ? { name: "detail", mealId: "" } : { name: "onboarding" },
   );
   const [surveyOpen, setSurveyOpen] = useState(false);
 

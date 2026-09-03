@@ -40,7 +40,7 @@ export interface Meal {
   image: string;
   bg: StickerBg;
   items: FoodItem[];
-  note?: string;
+  note?: string | undefined;
   place?: string;
 }
 
