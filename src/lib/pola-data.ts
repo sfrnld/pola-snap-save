@@ -40,8 +40,8 @@ export interface Meal {
   image: string;
   bg: StickerBg;
   items: FoodItem[];
-  note?: string;
-  place?: string;
+  note?: string | undefined;
+  place?: string | undefined;
 }
 
 export interface Budget {
