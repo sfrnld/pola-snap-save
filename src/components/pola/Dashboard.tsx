@@ -47,7 +47,7 @@ export function DashboardScreen({
             />
           )}
           {trend.map((v, i) => (
-            <div key={i} className="flex flex-1 flex-col items-center gap-1.5">
+            <div key={i} className="flex h-full flex-1 flex-col items-center justify-end gap-1.5">
               <p className="text-[10px] font-semibold text-muted-foreground">
                 {v.toLocaleString()}
               </p>
