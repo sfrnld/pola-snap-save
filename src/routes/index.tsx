@@ -211,35 +211,40 @@ function PolaApp() {
 
       {/* bottom navigation with capture CTA */}
       {!inFlow && screen.name !== "onboarding" && !(screen.name === "detail" && screen.mealId) && (
-        <nav className="fixed inset-x-0 bottom-0 z-10 mx-auto max-w-md">
-          <div className="flex items-end justify-between bg-card px-10 pb-5 pt-3 shadow-[0_-8px_24px_-16px_rgba(60,45,30,0.4)]">
-            <button
-              onClick={() => setTab("home")}
-              className={`flex flex-col items-center gap-1 text-[10px] font-semibold ${tab === "home" ? "text-leaf" : "text-muted-foreground"}`}
-            >
-              <House className="h-5 w-5" /> Home
-            </button>
-            <div className="flex flex-col items-center -mt-8">
-              <button
-                onClick={() => setScreen({ name: "capture" })}
-                className="flex h-16 w-16 items-center justify-center rounded-full bg-tomato text-primary-foreground shadow-[0_12px_30px_-6px_rgba(190,80,40,0.55)] ring-8 ring-background transition-transform active:scale-90"
-                aria-label="Capture meal"
-              >
-                <Camera className="h-7 w-7" />
-              </button>
-              <span className="mt-1 text-[10px] font-semibold text-muted-foreground">Record</span>
+        <nav className="pointer-events-none fixed inset-x-0 bottom-0 z-20 mx-auto max-w-md px-4 pb-6">
+          <div className="pointer-events-auto flex items-center gap-3">
+            <div className="glass flex flex-1 items-center justify-around rounded-full px-2 py-2.5">
+              {(
+                [
+                  { id: "home", label: "Home", Icon: House },
+                  { id: "library", label: "Library", Icon: Album },
+                  { id: "trends", label: "Trends", Icon: ChartColumn },
+                ] as const
+              ).map(({ id, label, Icon }) => {
+                const active = tab === id;
+                return (
+                  <button
+                    key={id}
+                    onClick={() => setTab(id)}
+                    aria-current={active ? "page" : undefined}
+                    className={`flex flex-col items-center gap-0.5 rounded-full px-4 py-1.5 text-[10px] font-semibold transition-colors ${
+                      active
+                        ? "bg-foreground/8 text-foreground"
+                        : "text-muted-foreground active:text-foreground"
+                    }`}
+                  >
+                    <Icon className="h-5 w-5" strokeWidth={active ? 2.4 : 1.8} />
+                    {label}
+                  </button>
+                );
+              })}
             </div>
             <button
-              onClick={() => setTab("library")}
-              className={`flex flex-col items-center gap-1 text-[10px] font-semibold ${tab === "library" ? "text-leaf" : "text-muted-foreground"}`}
+              onClick={() => setScreen({ name: "capture" })}
+              className="glass-dark flex h-[60px] w-[60px] shrink-0 items-center justify-center rounded-full text-primary-foreground transition-transform active:scale-90"
+              aria-label="Capture meal"
             >
-              <Album className="h-5 w-5" /> Library
-            </button>
-            <button
-              onClick={() => setTab("trends")}
-              className={`flex flex-col items-center gap-1 text-[10px] font-semibold ${tab === "trends" ? "text-leaf" : "text-muted-foreground"}`}
-            >
-              <ChartColumn className="h-5 w-5" /> Trends
+              <Camera className="h-6 w-6" strokeWidth={2} />
             </button>
           </div>
         </nav>
