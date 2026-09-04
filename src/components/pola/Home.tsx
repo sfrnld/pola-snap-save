@@ -178,13 +178,15 @@ export function HomeScreen({
                 className="rounded-3xl bg-card p-2 shadow-[0_6px_24px_-12px_rgba(60,45,30,0.25)] transition-transform active:scale-95"
               >
                 <div className={`${STICKER_BG[meal.bg]} rounded-[1.35rem] px-3 pb-2 pt-3 text-left`}>
-                  <div className="flex items-start justify-between gap-1">
-                    <p className="line-clamp-1 text-sm font-extrabold leading-tight text-ink">{meal.title}</p>
-                    <span className="shrink-0 rounded-full bg-ink px-2 py-0.5 text-[10px] font-bold text-primary-foreground">
+                  <div className="flex items-start justify-between gap-1.5">
+                    <p className="line-clamp-2 text-[13px] font-extrabold leading-tight text-ink">{meal.title}</p>
+                    <span className="mt-0.5 shrink-0 rounded-full bg-ink px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-primary-foreground">
                       {meal.mealType}
                     </span>
                   </div>
-                  <p className="mt-0.5 text-xs font-bold text-ink/60">{mealKcal(meal)} kcal</p>
+                  <p className="mt-1 inline-block rounded-full bg-card/70 px-2 py-0.5 text-[11px] font-extrabold text-ink">
+                    {mealKcal(meal)} kcal
+                  </p>
                   <div className="mt-1 flex justify-center">
                     <Sticker meal={meal} plain />
                   </div>
