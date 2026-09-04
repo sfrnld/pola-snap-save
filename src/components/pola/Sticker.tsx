@@ -1,5 +1,34 @@
 import { CUTOUTS, STICKER_BG, type Meal, type StickerBg } from "@/lib/pola-data";
 
+/** Die-cut outline filter (white band + thin dark keyline), rendered once per app. */
+export function StickerFilterDefs() {
+  return (
+    <svg aria-hidden="true" width="0" height="0" className="absolute">
+      <defs>
+        {[
+          ["pola-cut-sm", 3, 4],
+          ["pola-cut-md", 5, 6.5],
+          ["pola-cut-lg", 9, 11],
+        ].map(([id, white, dark]) => (
+          <filter key={id as string} id={id as string} x="-20%" y="-20%" width="140%" height="140%">
+            <feMorphology in="SourceAlpha" operator="dilate" radius={dark as number} result="outer" />
+            <feFlood floodColor="#15171a" result="darkFill" />
+            <feComposite in="darkFill" in2="outer" operator="in" result="darkBand" />
+            <feMorphology in="SourceAlpha" operator="dilate" radius={white as number} result="inner" />
+            <feFlood floodColor="#ffffff" result="whiteFill" />
+            <feComposite in="whiteFill" in2="inner" operator="in" result="whiteBand" />
+            <feMerge>
+              <feMergeNode in="darkBand" />
+              <feMergeNode in="whiteBand" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        ))}
+      </defs>
+    </svg>
+  );
+}
+
 export function StickerArt({
   image,
   bg,
@@ -26,7 +55,8 @@ export function StickerArt({
         loading="lazy"
         width={804}
         height={746}
-        className={`${imgDims} object-contain sticker-die-cut`}
+        className={`${imgDims} object-contain drop-shadow-[0_10px_12px_rgba(20,22,18,0.28)]`}
+        style={{ filter: `url(#pola-cut-${size}) drop-shadow(0 10px 12px rgba(20,22,18,0.28))` }}
       />
     </div>
   );
