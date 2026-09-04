@@ -105,7 +105,7 @@ export function ReviewScreen({
                     onClick={() => changeServing(item.id, s)}
                     className={`rounded-full px-2.5 py-1 text-[10px] font-semibold transition-colors ${
                       item.serving === s
-                        ? "bg-leaf text-primary-foreground"
+                        ? "bg-lime text-ink"
                         : "bg-muted text-muted-foreground"
                     }`}
                   >
@@ -140,7 +140,7 @@ export function ReviewScreen({
           {(
             [
               ["Carbs", macros.carbs, "bg-honey"],
-              ["Protein", macros.protein, "bg-leaf"],
+              ["Protein", macros.protein, "bg-lime"],
               ["Fat", macros.fat, "bg-tomato"],
             ] as const
           ).map(([label, grams, color]) => (
@@ -158,7 +158,7 @@ export function ReviewScreen({
       </div>
 
       {/* total */}
-      <div className="mt-5 rounded-3xl bg-leaf-soft p-5 text-center">
+      <div className="mt-5 rounded-3xl bg-lime-soft p-5 text-center">
         <p className="font-[family-name:var(--font-display)] text-3xl font-semibold text-ink">
           Estimated total: {total.toLocaleString()} kcal
         </p>

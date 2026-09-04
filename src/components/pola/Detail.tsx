@@ -77,7 +77,7 @@ export function DetailScreen({
                         onClick={() => changeServing(item.id, s)}
                         className={`rounded-full px-2.5 py-1 text-[10px] font-semibold transition-colors ${
                           item.serving === s
-                            ? "bg-leaf text-primary-foreground"
+                            ? "bg-lime text-ink"
                             : "bg-muted text-muted-foreground"
                         }`}
                       >
@@ -106,7 +106,7 @@ export function DetailScreen({
         <button
           onClick={() => setEditing((e) => !e)}
           className={`flex flex-1 items-center justify-center gap-1.5 rounded-full py-3.5 text-sm font-semibold transition-colors ${
-            editing ? "bg-leaf text-primary-foreground" : "bg-card text-ink shadow"
+            editing ? "bg-lime text-ink" : "bg-card text-ink shadow"
           }`}
         >
           <Pencil className="h-4 w-4" /> {editing ? "Done editing" : "Edit foods"}

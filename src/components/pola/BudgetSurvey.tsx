@@ -28,7 +28,7 @@ function Chip({
     <button
       onClick={onClick}
       className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
-        active ? "bg-leaf text-primary-foreground" : "bg-muted text-muted-foreground"
+        active ? "bg-lime text-ink" : "bg-muted text-muted-foreground"
       }`}
     >
       {children}
@@ -127,7 +127,7 @@ export function BudgetSurvey({
           </Row>
         </div>
 
-        <div className="mt-6 rounded-3xl bg-leaf-soft p-5 text-center">
+        <div className="mt-6 rounded-3xl bg-lime-soft p-5 text-center">
           <p className="font-[family-name:var(--font-display)] text-3xl font-semibold text-ink">
             {preview.kcal.toLocaleString()} kcal
           </p>

@@ -77,7 +77,7 @@ export function CaptureScreen({
               key={id}
               onClick={() => setMode(id)}
               className={`flex flex-1 items-center justify-center gap-1.5 rounded-full py-2 text-xs font-semibold transition-colors ${
-                mode === id ? "bg-leaf text-primary-foreground" : "text-muted-foreground"
+                mode === id ? "bg-lime text-ink" : "text-muted-foreground"
               }`}
             >
               <Icon className="h-3.5 w-3.5" />
@@ -187,7 +187,7 @@ export function CaptureScreen({
                     setMealType("Dinner");
                     setOldPhoto(false);
                   }}
-                  className="rounded-full bg-leaf px-3 py-1.5 text-[11px] font-semibold text-primary-foreground"
+                  className="rounded-full bg-lime px-3 py-1.5 text-[11px] font-bold text-ink"
                 >
                   Log as yesterday's dinner
                 </button>
@@ -226,7 +226,7 @@ export function CaptureScreen({
             {shots.length > 0 ? (
               <button
                 onClick={() => onAnalyze(mealType, "photo")}
-                className="w-full rounded-full bg-leaf py-4 text-base font-semibold text-primary-foreground shadow-[0_10px_24px_-8px_rgba(60,90,60,0.5)] transition-transform active:scale-95"
+                className="w-full rounded-full bg-lime py-4 text-base font-bold text-ink shadow-[0_10px_24px_-8px_rgba(60,90,60,0.5)] transition-transform active:scale-95"
               >
                 Continue with {shots.length} photo{shots.length === 1 ? "" : "s"}
               </button>
@@ -287,7 +287,7 @@ export function CaptureScreen({
                   <p className="text-sm font-semibold text-ink">{entry.name}</p>
                   <p className="text-xs text-muted-foreground">{entry.kcal} kcal · Regular</p>
                 </div>
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-leaf-soft text-leaf">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-lime-soft text-leaf">
                   <Plus className="h-4 w-4" />
                 </span>
               </button>

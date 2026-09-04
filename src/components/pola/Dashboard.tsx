@@ -52,7 +52,7 @@ export function DashboardScreen({
                 {v.toLocaleString()}
               </p>
               <div
-                className={`w-full rounded-t-lg ${i === trend.length - 1 ? "bg-tomato" : "bg-leaf/60"}`}
+                className={`w-full rounded-t-lg ${i === trend.length - 1 ? "bg-tomato" : "bg-lime"}`}
                 style={{ height: `${Math.max(6, (v / max) * 100)}%` }}
               />
             </div>
@@ -70,7 +70,7 @@ export function DashboardScreen({
       {/* counts */}
       <div className="mt-4 grid grid-cols-2 gap-4">
         <div className="rounded-3xl bg-card p-4 shadow-[0_6px_24px_-12px_rgba(60,45,30,0.25)]">
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-honey-soft">
+          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-lime-soft">
             <UtensilsCrossed className="h-4 w-4 text-tomato" />
           </span>
           <p className="mt-2 font-[family-name:var(--font-display)] text-2xl font-semibold text-ink">
@@ -79,7 +79,7 @@ export function DashboardScreen({
           <p className="text-xs text-muted-foreground">meals logged today</p>
         </div>
         <div className="rounded-3xl bg-card p-4 shadow-[0_6px_24px_-12px_rgba(60,45,30,0.25)]">
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-leaf-soft">
+          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-lime-soft">
             <Coffee className="h-4 w-4 text-leaf" />
           </span>
           <p className="mt-2 font-[family-name:var(--font-display)] text-2xl font-semibold text-ink">
@@ -94,7 +94,7 @@ export function DashboardScreen({
         <h2 className="text-sm font-semibold text-ink">Macro split — your log</h2>
         <div className="mt-3 flex h-3 overflow-hidden rounded-full">
           <div className="bg-honey" style={{ width: `${(macros.carbs / macroTotal) * 100}%` }} />
-          <div className="bg-leaf" style={{ width: `${(macros.protein / macroTotal) * 100}%` }} />
+          <div className="bg-lime" style={{ width: `${(macros.protein / macroTotal) * 100}%` }} />
           <div className="bg-tomato" style={{ width: `${(macros.fat / macroTotal) * 100}%` }} />
         </div>
         <div className="mt-3 flex justify-between">
