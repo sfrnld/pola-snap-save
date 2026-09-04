@@ -11,10 +11,22 @@ export function StickerFilterDefs() {
           ["pola-cut-lg", 9, 11],
         ].map(([id, white, dark]) => (
           <filter key={id as string} id={id as string} x="-20%" y="-20%" width="140%" height="140%">
-            <feMorphology in="SourceAlpha" operator="dilate" radius={dark as number} result="outer" />
+            <feGaussianBlur in="SourceAlpha" stdDeviation={1.4} result="soft" />
+            <feComponentTransfer in="soft" result="alpha">
+              <feFuncA type="linear" slope={12} intercept={-2} />
+            </feComponentTransfer>
+            <feMorphology in="alpha" operator="dilate" radius={dark as number} result="outerRaw" />
+            <feGaussianBlur in="outerRaw" stdDeviation={1.2} result="outerSoft" />
+            <feComponentTransfer in="outerSoft" result="outer">
+              <feFuncA type="linear" slope={12} intercept={-4} />
+            </feComponentTransfer>
             <feFlood floodColor="#15171a" result="darkFill" />
             <feComposite in="darkFill" in2="outer" operator="in" result="darkBand" />
-            <feMorphology in="SourceAlpha" operator="dilate" radius={white as number} result="inner" />
+            <feMorphology in="alpha" operator="dilate" radius={white as number} result="innerRaw" />
+            <feGaussianBlur in="innerRaw" stdDeviation={1.2} result="innerSoft" />
+            <feComponentTransfer in="innerSoft" result="inner">
+              <feFuncA type="linear" slope={12} intercept={-4} />
+            </feComponentTransfer>
             <feFlood floodColor="#ffffff" result="whiteFill" />
             <feComposite in="whiteFill" in2="inner" operator="in" result="whiteBand" />
             <feMerge>
