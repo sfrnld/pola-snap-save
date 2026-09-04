@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ChevronLeft, MapPin, Pencil, Trash2 } from "lucide-react";
-import { mealKcal, rescaleItem, type Meal, type Serving } from "@/lib/pola-data";
+import { macrosOf, mealKcal, rescaleItem, type Meal, type Serving } from "@/lib/pola-data";
 import { Sticker } from "./Sticker";
 
 export function DetailScreen({
@@ -17,6 +17,7 @@ export function DetailScreen({
   const [editing, setEditing] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const total = mealKcal(meal);
+  const macros = macrosOf(meal.items);
 
   const changeServing = (id: string, serving: Serving) =>
     onUpdateItems(meal.items.map((i) => (i.id === id ? rescaleItem(i, serving) : i)));
