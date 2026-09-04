@@ -22,6 +22,7 @@ import { ReviewScreen, type ReviewResult } from "@/components/pola/Review";
 import { DetailScreen } from "@/components/pola/Detail";
 import { LibraryScreen } from "@/components/pola/Library";
 import { DashboardScreen } from "@/components/pola/Dashboard";
+import { StickerFilterDefs } from "@/components/pola/Sticker";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -126,6 +127,7 @@ function PolaApp() {
 
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-background">
+      <StickerFilterDefs />
       {screen.name === "onboarding" ? (
         <OnboardingScreen
           onDone={() => {
