@@ -126,13 +126,13 @@ export function CaptureScreen({
       {photoMode && (
         <>
           {/* live camera viewfinder */}
-          <div className="relative flex-1 overflow-hidden">
+          <div className="relative min-h-[380px] flex-1 overflow-hidden">
             <img
               src={IMAGES.nasiGulaiImg}
               alt="Camera preview showing an Indonesian meal"
               width={1024}
               height={1024}
-              className={`h-full w-full object-cover ${flash ? "brightness-125" : ""}`}
+              className={`absolute inset-0 h-full w-full object-cover ${flash ? "brightness-125" : ""}`}
             />
 
             {/* top overlay controls */}
