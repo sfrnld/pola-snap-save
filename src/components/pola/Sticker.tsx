@@ -1,20 +1,26 @@
 import { CUTOUTS, STICKER_BG, type Meal, type StickerBg } from "@/lib/pola-data";
 
-/** Die-cut outline filter (white band + thin dark keyline), rendered once per app. */
+/**
+ * Die-cut sticker outline: thick white band that follows the object silhouette
+ * with a subtle hand-drawn wobble, a thin black outer contour, and a soft
+ * lower-right lift shadow.
+ */
 export function StickerFilterDefs() {
   return (
     <svg aria-hidden="true" width="0" height="0" className="absolute">
       <defs>
         {[
-          ["pola-cut-sm", 3, 4],
-          ["pola-cut-md", 5, 6.5],
-          ["pola-cut-lg", 9, 11],
-        ].map(([id, white, dark]) => (
-          <filter key={id as string} id={id as string} x="-20%" y="-20%" width="140%" height="140%">
+          ["pola-cut-sm", 3, 4, 1.1],
+          ["pola-cut-md", 5, 6.5, 1.7],
+          ["pola-cut-lg", 9, 11, 2.8],
+        ].map(([id, white, dark, wobble]) => (
+          <filter key={id as string} id={id as string} x="-25%" y="-25%" width="150%" height="150%">
             <feGaussianBlur in="SourceAlpha" stdDeviation={1.4} result="soft" />
             <feComponentTransfer in="soft" result="alpha">
               <feFuncA type="linear" slope={12} intercept={-2} />
             </feComponentTransfer>
+
+            {/* thin black outer contour */}
             <feMorphology in="alpha" operator="dilate" radius={dark as number} result="outerRaw" />
             <feGaussianBlur in="outerRaw" stdDeviation={1.2} result="outerSoft" />
             <feComponentTransfer in="outerSoft" result="outer">
@@ -22,6 +28,8 @@ export function StickerFilterDefs() {
             </feComponentTransfer>
             <feFlood floodColor="#15171a" result="darkFill" />
             <feComposite in="darkFill" in2="outer" operator="in" result="darkBand" />
+
+            {/* thick white band */}
             <feMorphology in="alpha" operator="dilate" radius={white as number} result="innerRaw" />
             <feGaussianBlur in="innerRaw" stdDeviation={1.2} result="innerSoft" />
             <feComponentTransfer in="innerSoft" result="inner">
@@ -29,11 +37,39 @@ export function StickerFilterDefs() {
             </feComponentTransfer>
             <feFlood floodColor="#ffffff" result="whiteFill" />
             <feComposite in="whiteFill" in2="inner" operator="in" result="whiteBand" />
-            <feMerge>
+
+            <feMerge result="cutRaw">
               <feMergeNode in="darkBand" />
               <feMergeNode in="whiteBand" />
               <feMergeNode in="SourceGraphic" />
             </feMerge>
+
+            {/* casual, slightly hand-cut edge */}
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.022"
+              numOctaves={2}
+              seed={7}
+              result="noise"
+            />
+            <feDisplacementMap
+              in="cutRaw"
+              in2="noise"
+              scale={wobble as number}
+              xChannelSelector="R"
+              yChannelSelector="G"
+              result="cut"
+            />
+
+            {/* soft lower-right lift shadow */}
+            <feDropShadow
+              in="cut"
+              dx={(dark as number) * 0.9}
+              dy={(dark as number) * 1.1}
+              stdDeviation={(dark as number) * 0.9}
+              floodColor="#1b1d1a"
+              floodOpacity="0.3"
+            />
           </filter>
         ))}
       </defs>
@@ -46,7 +82,7 @@ export function StickerArt({
   bg,
   alt,
   size = "md",
-  plain = false,
+  plain = true,
 }: {
   image: string;
   bg: StickerBg;
@@ -67,8 +103,8 @@ export function StickerArt({
         loading="lazy"
         width={804}
         height={746}
-        className={`${imgDims} object-contain drop-shadow-[0_10px_12px_rgba(20,22,18,0.28)]`}
-        style={{ filter: `url(#pola-cut-${size}) drop-shadow(0 10px 12px rgba(20,22,18,0.28))` }}
+        className={`${imgDims} object-contain`}
+        style={{ filter: `url(#pola-cut-${size})` }}
       />
     </div>
   );
@@ -77,7 +113,7 @@ export function StickerArt({
 export function Sticker({
   meal,
   size = "md",
-  plain = false,
+  plain = true,
 }: {
   meal: Meal;
   size?: "sm" | "md" | "lg";
