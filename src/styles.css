@@ -60,16 +60,18 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-cream: oklch(0.965 0.002 250);
-  --color-leaf: oklch(0.22 0.005 250);
-  --color-leaf-soft: oklch(0.9 0.004 250);
+  --color-lime: oklch(0.88 0.21 128);
+  --color-lime-soft: oklch(0.95 0.09 126);
+  --color-leaf: oklch(0.56 0.16 132);
+  --color-leaf-soft: oklch(0.94 0.08 126);
   --color-tomato: oklch(0.16 0.004 250);
-  --color-tomato-soft: oklch(0.93 0.003 250);
-  --color-honey: oklch(0.86 0.004 250);
-  --color-honey-soft: oklch(0.94 0.003 250);
-  --color-peach: oklch(0.9 0.004 250);
+  --color-tomato-soft: oklch(0.93 0.02 40);
+  --color-honey: oklch(0.82 0.14 88);
+  --color-honey-soft: oklch(0.95 0.05 92);
+  --color-peach: oklch(0.92 0.05 45);
   --color-ink: oklch(0.18 0.004 250);
-  --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Nunito", ui-rounded, system-ui, sans-serif;
+  --font-sans: "Nunito", ui-rounded, system-ui, sans-serif;
 }
 
 @theme {
@@ -114,17 +116,22 @@
 /* Die-cut sticker: thick white outline following the food's shape + soft lift */
 @utility sticker-die-cut {
   filter:
-    drop-shadow(4px 0 0 var(--card)) drop-shadow(-4px 0 0 var(--card))
-    drop-shadow(0 4px 0 var(--card)) drop-shadow(0 -4px 0 var(--card))
-    drop-shadow(3px 3px 0 var(--card)) drop-shadow(-3px 3px 0 var(--card))
-    drop-shadow(3px -3px 0 var(--card)) drop-shadow(-3px -3px 0 var(--card))
+    drop-shadow(5px 0 0 var(--card)) drop-shadow(-5px 0 0 var(--card))
+    drop-shadow(0 5px 0 var(--card)) drop-shadow(0 -5px 0 var(--card))
+    drop-shadow(4px 4px 0 var(--card)) drop-shadow(-4px 4px 0 var(--card))
+    drop-shadow(4px -4px 0 var(--card)) drop-shadow(-4px -4px 0 var(--card))
     drop-shadow(2px 0 0 var(--card)) drop-shadow(-2px 0 0 var(--card))
     drop-shadow(0 2px 0 var(--card)) drop-shadow(0 -2px 0 var(--card))
-    drop-shadow(0 14px 16px rgba(60, 45, 30, 0.35));
+    drop-shadow(1.5px 0 0 var(--ink-line)) drop-shadow(-1.5px 0 0 var(--ink-line))
+    drop-shadow(0 1.5px 0 var(--ink-line)) drop-shadow(0 -1.5px 0 var(--ink-line))
+    drop-shadow(1px 1px 0 var(--ink-line)) drop-shadow(-1px 1px 0 var(--ink-line))
+    drop-shadow(1px -1px 0 var(--ink-line)) drop-shadow(-1px -1px 0 var(--ink-line))
+    drop-shadow(0 12px 14px rgba(20, 22, 18, 0.28));
 }
 
 :root {
   --radius: 1.25rem;
+  --ink-line: oklch(0.16 0.004 250);
   --background: oklch(0.965 0.002 250);
   --foreground: oklch(0.18 0.004 250);
   --card: oklch(1 0 0);

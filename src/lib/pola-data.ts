@@ -222,7 +222,7 @@ export const PLACES = [
 ];
 
 export const STICKER_BG: Record<StickerBg, string> = {
-  leaf: "bg-leaf-soft",
+  leaf: "bg-lime-soft",
   honey: "bg-honey-soft",
   peach: "bg-peach",
   tomato: "bg-tomato-soft",
