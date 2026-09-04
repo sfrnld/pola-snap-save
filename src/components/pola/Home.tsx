@@ -7,6 +7,7 @@ import {
   type Budget,
   type Meal,
 } from "@/lib/pola-data";
+import { STICKER_BG } from "@/lib/pola-data";
 import { Sticker } from "./Sticker";
 
 function MacroBar({
@@ -63,7 +64,7 @@ export function HomeScreen({
             {DAY_LABELS[day]}
           </h1>
         </div>
-        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-honey-soft">
+        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-lime-soft">
           <Flame className="h-5 w-5 text-tomato" />
         </div>
       </header>
@@ -107,7 +108,7 @@ export function HomeScreen({
             </div>
             <div className="mt-3 h-2.5 overflow-hidden rounded-full bg-muted">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-leaf to-honey transition-all duration-700"
+                className="h-full rounded-full bg-gradient-to-r from-lime to-leaf transition-all duration-700"
                 style={{ width: `${pct}%` }}
               />
             </div>
@@ -115,7 +116,7 @@ export function HomeScreen({
         ) : (
           <button onClick={onOpenSurvey} className="w-full text-left">
             <div className="flex items-center gap-3">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-honey-soft">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-lime-soft">
                 <Target className="h-5 w-5 text-tomato" />
               </span>
               <div className="min-w-0">
@@ -134,7 +135,7 @@ export function HomeScreen({
 
         <div className="mt-4 flex gap-3 border-t border-border pt-4">
           <MacroBar label="Carbs" used={macros.carbs} budget={budget?.carbs ?? null} color="bg-honey" />
-          <MacroBar label="Protein" used={macros.protein} budget={budget?.protein ?? null} color="bg-leaf" />
+          <MacroBar label="Protein" used={macros.protein} budget={budget?.protein ?? null} color="bg-lime" />
           <MacroBar label="Fat" used={macros.fat} budget={budget?.fat ?? null} color="bg-tomato" />
         </div>
       </div>
@@ -174,13 +175,20 @@ export function HomeScreen({
               <button
                 key={meal.id}
                 onClick={() => onOpen(meal.id)}
-                className="flex flex-col items-center rounded-3xl bg-card p-4 pt-5 text-center shadow-[0_6px_24px_-12px_rgba(60,45,30,0.25)] transition-transform active:scale-95"
+                className="rounded-3xl bg-card p-2 shadow-[0_6px_24px_-12px_rgba(60,45,30,0.25)] transition-transform active:scale-95"
               >
-                <Sticker meal={meal} />
-                <p className="mt-3 text-sm font-semibold leading-tight text-ink">{meal.title}</p>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {mealKcal(meal)} kcal · {meal.mealType}
-                </p>
+                <div className={`${STICKER_BG[meal.bg]} rounded-[1.35rem] px-3 pb-2 pt-3 text-left`}>
+                  <div className="flex items-start justify-between gap-1">
+                    <p className="line-clamp-1 text-sm font-extrabold leading-tight text-ink">{meal.title}</p>
+                    <span className="shrink-0 rounded-full bg-ink px-2 py-0.5 text-[10px] font-bold text-primary-foreground">
+                      {meal.mealType}
+                    </span>
+                  </div>
+                  <p className="mt-0.5 text-xs font-bold text-ink/60">{mealKcal(meal)} kcal</p>
+                  <div className="mt-1 flex justify-center">
+                    <Sticker meal={meal} plain />
+                  </div>
+                </div>
               </button>
             ))}
           </div>
