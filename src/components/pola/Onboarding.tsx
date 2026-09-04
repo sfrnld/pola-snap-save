@@ -41,7 +41,7 @@ export function OnboardingScreen({ onDone }: { onDone: () => void }) {
       </div>
 
       <div className="mt-10 text-center">
-        <span className="mx-auto flex h-11 w-11 items-center justify-center rounded-full bg-honey-soft">
+        <span className="mx-auto flex h-11 w-11 items-center justify-center rounded-full bg-lime-soft">
           <Icon className="h-5 w-5 text-tomato" />
         </span>
         <h1 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-semibold text-ink">

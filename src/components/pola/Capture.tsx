@@ -77,7 +77,7 @@ export function CaptureScreen({
               key={id}
               onClick={() => setMode(id)}
               className={`flex flex-1 items-center justify-center gap-1.5 rounded-full py-2 text-xs font-semibold transition-colors ${
-                mode === id ? "bg-leaf text-primary-foreground" : "text-muted-foreground"
+                mode === id ? "bg-lime text-ink" : "text-muted-foreground"
               }`}
             >
               <Icon className="h-3.5 w-3.5" />
@@ -287,7 +287,7 @@ export function CaptureScreen({
                   <p className="text-sm font-semibold text-ink">{entry.name}</p>
                   <p className="text-xs text-muted-foreground">{entry.kcal} kcal · Regular</p>
                 </div>
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-leaf-soft text-leaf">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-lime-soft text-leaf">
                   <Plus className="h-4 w-4" />
                 </span>
               </button>

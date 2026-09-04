@@ -39,7 +39,7 @@ export function LibraryScreen({
             onClick={() => setView("list")}
             aria-label="List view"
             className={`flex h-8 w-8 items-center justify-center rounded-full ${
-              view === "list" ? "bg-leaf text-primary-foreground" : "text-muted-foreground"
+              view === "list" ? "bg-lime text-ink" : "text-muted-foreground"
             }`}
           >
             <List className="h-4 w-4" />
@@ -48,7 +48,7 @@ export function LibraryScreen({
             onClick={() => setView("map")}
             aria-label="Map view"
             className={`flex h-8 w-8 items-center justify-center rounded-full ${
-              view === "map" ? "bg-leaf text-primary-foreground" : "text-muted-foreground"
+              view === "map" ? "bg-lime text-ink" : "text-muted-foreground"
             }`}
           >
             <MapIcon className="h-4 w-4" />
@@ -59,7 +59,7 @@ export function LibraryScreen({
       {view === "list" ? (
         meals.length === 0 ? (
           <div className="mt-16 flex flex-col items-center text-center">
-            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-honey-soft">
+            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-lime-soft">
               <Album className="h-6 w-6 text-tomato" />
             </span>
             <p className="mt-4 max-w-[240px] text-sm text-muted-foreground">
@@ -90,7 +90,7 @@ export function LibraryScreen({
                 <button
                   onClick={() => onQuickLog(meal)}
                   aria-label={`Log ${meal.title} again`}
-                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-leaf text-primary-foreground transition-transform active:scale-90"
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-lime text-ink transition-transform active:scale-90"
                 >
                   <Plus className="h-4 w-4" />
                 </button>
@@ -100,14 +100,14 @@ export function LibraryScreen({
         )
       ) : (
         <div className="mt-6">
-          <div className="relative overflow-hidden rounded-3xl bg-leaf-soft shadow-[0_6px_24px_-12px_rgba(60,45,30,0.25)]" style={{ height: 420 }}>
+          <div className="relative overflow-hidden rounded-3xl bg-lime-soft shadow-[0_6px_24px_-12px_rgba(60,45,30,0.25)]" style={{ height: 420 }}>
             {/* mock map streets */}
             <div className="absolute inset-0 opacity-40">
               <div className="absolute left-0 right-0 top-[30%] h-2 bg-card" />
               <div className="absolute left-0 right-0 top-[62%] h-2 bg-card" />
               <div className="absolute bottom-0 left-[35%] top-0 w-2 bg-card" />
               <div className="absolute bottom-0 left-[72%] top-0 w-2 bg-card" />
-              <div className="absolute right-[12%] top-[48%] h-16 w-16 rounded-full bg-leaf/20" />
+              <div className="absolute right-[12%] top-[48%] h-16 w-16 rounded-full bg-lime/40" />
             </div>
             {placed.map((m, i) => {
               const pos = PIN_POS[i % PIN_POS.length]!;
