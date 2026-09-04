@@ -62,8 +62,42 @@ export function DetailScreen({
         )}
       </div>
 
-      <div className="mt-6 rounded-3xl bg-card p-4 shadow-[0_6px_24px_-12px_rgba(60,45,30,0.25)]">
-        <h2 className="px-1 text-sm font-semibold text-ink">What's inside</h2>
+      <h2 className="mt-7 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+        Calories &amp; macros
+      </h2>
+      <div className="mt-2 grid grid-cols-3 gap-2">
+        {(
+          [
+            ["Calories", `${total}`, "text-ink"],
+            ["Carbs", `${macros.carbs} g`, "text-honey"],
+            ["Protein", `${macros.protein} g`, "text-leaf"],
+          ] as const
+        ).map(([label, value, color]) => (
+          <div key={label} className="rounded-2xl bg-card p-3 text-center">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{label}</p>
+            <p className={`mt-1 font-[family-name:var(--font-display)] text-xl font-extrabold ${color}`}>
+              {value}
+            </p>
+          </div>
+        ))}
+      </div>
+      <div className="mt-2 grid grid-cols-2 gap-2">
+        <div className="rounded-2xl bg-card p-3 text-center">
+          <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Fat</p>
+          <p className="mt-1 font-[family-name:var(--font-display)] text-xl font-extrabold text-ink">
+            {macros.fat} g
+          </p>
+        </div>
+        <div className="rounded-2xl bg-card p-3 text-center">
+          <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Items</p>
+          <p className="mt-1 font-[family-name:var(--font-display)] text-xl font-extrabold text-ink">
+            {meal.items.length}
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-3 rounded-3xl bg-card p-4">
+        <h2 className="px-1 text-sm font-bold text-ink">Ingredients</h2>
         <div className="mt-2 divide-y divide-border">
           {meal.items.map((item) => (
             <div key={item.id} className="flex items-center gap-3 py-3">
