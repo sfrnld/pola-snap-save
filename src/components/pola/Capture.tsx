@@ -11,6 +11,7 @@ import {
   Check,
   PenLine,
   Album,
+  Scan,
 } from "lucide-react";
 import {
   IMAGES,
@@ -54,18 +55,26 @@ export function CaptureScreen({
     setOldPhoto(true);
   };
 
+  const photoMode = mode === "photo";
+
   return (
-    <div className="flex flex-1 flex-col animate-pola-fade">
+    <div className={`flex flex-1 flex-col animate-pola-fade ${photoMode ? "bg-ink" : ""}`}>
       {/* mode switch */}
-      <div className="flex items-center gap-3 px-5 pt-6">
+      <div className={`flex items-center gap-3 px-5 pt-6 ${photoMode ? "pb-3" : ""}`}>
         <button
           onClick={onBack}
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-card text-ink shadow"
+          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${
+            photoMode ? "bg-white/15 text-white backdrop-blur" : "bg-card text-ink shadow"
+          }`}
           aria-label="Back"
         >
           <ChevronLeft className="h-5 w-5" />
         </button>
-        <div className="flex flex-1 gap-1 rounded-full bg-card p-1 shadow-[0_4px_16px_-10px_rgba(60,45,30,0.3)]">
+        <div
+          className={`flex flex-1 gap-1 rounded-full p-1 ${
+            photoMode ? "bg-white/12 backdrop-blur" : "bg-card shadow-[0_4px_16px_-10px_rgba(60,45,30,0.3)]"
+          }`}
+        >
           {(
             [
               ["photo", "Snap", Camera],
@@ -76,8 +85,14 @@ export function CaptureScreen({
             <button
               key={id}
               onClick={() => setMode(id)}
-              className={`flex flex-1 items-center justify-center gap-1.5 rounded-full py-2 text-xs font-semibold transition-colors ${
-                mode === id ? "bg-lime text-ink" : "text-muted-foreground"
+              className={`flex flex-1 items-center justify-center gap-1.5 rounded-full py-2 text-xs font-bold transition-colors ${
+                mode === id
+                  ? photoMode
+                    ? "bg-white text-ink"
+                    : "bg-lime text-ink"
+                  : photoMode
+                    ? "text-white/70"
+                    : "text-muted-foreground"
               }`}
             >
               <Icon className="h-3.5 w-3.5" />
@@ -87,54 +102,92 @@ export function CaptureScreen({
         </div>
       </div>
 
-      {/* meal type — auto-selected by time of day */}
-      <div className="mt-4 px-5">
-        <div className="flex gap-1.5 overflow-x-auto pb-1">
-          {MEAL_TYPES.map((t) => (
-            <button
-              key={t}
-              onClick={() => setMealType(t)}
-              className={`shrink-0 rounded-full px-3.5 py-1.5 text-[11px] font-semibold transition-colors ${
-                mealType === t ? "bg-tomato text-primary-foreground" : "bg-card text-muted-foreground"
-              }`}
-            >
-              {t}
-            </button>
-          ))}
+      {!photoMode && (
+        <div className="mt-4 px-5">
+          <div className="flex gap-1.5 overflow-x-auto pb-1">
+            {MEAL_TYPES.map((t) => (
+              <button
+                key={t}
+                onClick={() => setMealType(t)}
+                className={`shrink-0 rounded-full px-3.5 py-1.5 text-[11px] font-bold transition-colors ${
+                  mealType === t ? "bg-ink text-primary-foreground" : "bg-card text-muted-foreground"
+                }`}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+          <p className="mt-1.5 text-[11px] text-muted-foreground">
+            Auto-selected from the time of day — tap to change.
+          </p>
         </div>
-        <p className="mt-1.5 text-[11px] text-muted-foreground">
-          Auto-selected from the time of day — tap to change.
-        </p>
-      </div>
+      )}
 
-      {mode === "photo" && (
+      {photoMode && (
         <>
-          <div className="relative mx-5 mt-4 overflow-hidden rounded-[2rem]">
+          {/* live camera viewfinder */}
+          <div className="relative flex-1 overflow-hidden">
             <img
               src={IMAGES.nasiGulaiImg}
               alt="Camera preview showing an Indonesian meal"
               width={1024}
               height={1024}
-              className={`aspect-[4/5] w-full object-cover ${flash ? "brightness-125" : ""}`}
+              className={`h-full w-full object-cover ${flash ? "brightness-125" : ""}`}
             />
-            <button
-              onClick={() => setFlash((f) => !f)}
-              aria-label={flash ? "Turn flash off" : "Turn flash on"}
-              className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-card/90 text-ink backdrop-blur"
-            >
-              {flash ? <Zap className="h-5 w-5 text-honey" /> : <ZapOff className="h-5 w-5" />}
-            </button>
+
+            {/* top overlay controls */}
+            <div className="absolute inset-x-4 top-4 flex items-center gap-2">
+              <div className="flex gap-1 overflow-x-auto rounded-full bg-ink/45 p-1 backdrop-blur">
+                {MEAL_TYPES.map((t) => (
+                  <button
+                    key={t}
+                    onClick={() => setMealType(t)}
+                    className={`shrink-0 rounded-full px-3 py-1.5 text-[11px] font-bold transition-colors ${
+                      mealType === t ? "bg-white text-ink" : "text-white/75"
+                    }`}
+                  >
+                    {t}
+                  </button>
+                ))}
+              </div>
+              <button
+                onClick={() => setTips((v) => !v)}
+                aria-label="Photo tips"
+                className="ml-auto flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink/45 text-white backdrop-blur"
+              >
+                <Info className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() => setFlash((f) => !f)}
+                aria-label={flash ? "Turn flash off" : "Turn flash on"}
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink/45 text-white backdrop-blur"
+              >
+                {flash ? <Zap className="h-4 w-4 text-honey" /> : <ZapOff className="h-4 w-4" />}
+              </button>
+            </div>
+
+            {/* framing brackets */}
+            <div className="pointer-events-none absolute inset-x-8 top-24 bottom-24">
+              {[
+                "left-0 top-0 border-l-4 border-t-4 rounded-tl-3xl",
+                "right-0 top-0 border-r-4 border-t-4 rounded-tr-3xl",
+                "left-0 bottom-0 border-l-4 border-b-4 rounded-bl-3xl",
+                "right-0 bottom-0 border-r-4 border-b-4 rounded-br-3xl",
+              ].map((c) => (
+                <span key={c} className={`absolute h-12 w-12 border-white/85 ${c}`} />
+              ))}
+            </div>
 
             {tips && (
-              <div className="absolute inset-x-4 bottom-4 rounded-2xl bg-card/95 p-3 backdrop-blur">
+              <div className="absolute inset-x-4 bottom-4 rounded-2xl bg-ink/70 p-3 backdrop-blur">
                 <div className="flex items-start gap-2">
-                  <Info className="mt-0.5 h-4 w-4 shrink-0 text-leaf" />
-                  <p className="text-[11px] leading-relaxed text-muted-foreground">
-                    Shoot plates and bowls <strong className="text-ink">from directly above</strong>; shoot
-                    glasses and packaging <strong className="text-ink">from the front</strong>. One food per
-                    photo works best — add more photos for the rest of the meal.
+                  <Info className="mt-0.5 h-4 w-4 shrink-0 text-lime" />
+                  <p className="text-[11px] leading-relaxed text-white/80">
+                    Shoot plates and bowls <strong className="text-white">from directly above</strong>; shoot
+                    glasses and packaging <strong className="text-white">from the front</strong>. Add another
+                    photo for each item in the meal.
                   </p>
-                  <button onClick={() => setTips(false)} aria-label="Dismiss tips" className="text-muted-foreground">
+                  <button onClick={() => setTips(false)} aria-label="Dismiss tips" className="text-white/70">
                     <X className="h-4 w-4" />
                   </button>
                 </div>
@@ -142,98 +195,102 @@ export function CaptureScreen({
             )}
           </div>
 
-          {/* photo tray */}
-          {shots.length > 0 && (
-            <div className="mt-4 px-5">
-              <div className="flex gap-2 overflow-x-auto pb-1">
-                {shots.map((s, i) => (
-                  <div key={`${s}-${i}`} className="relative shrink-0">
-                    <button onClick={() => setPreview(s)} aria-label={`Review photo ${i + 1}`}>
-                      <img
-                        src={s}
-                        alt={`Captured photo ${i + 1}`}
-                        className="h-16 w-16 rounded-xl object-cover"
-                      />
-                    </button>
-                    <button
-                      onClick={() => setShots((list) => list.filter((_, n) => n !== i))}
-                      aria-label={`Delete photo ${i + 1}`}
-                      className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-ink text-[10px] text-background"
-                    >
-                      <X className="h-3 w-3" />
-                    </button>
-                  </div>
-                ))}
-                <button
-                  onClick={() => addShot(IMAGES.icedTeaImg)}
-                  aria-label="Add another photo"
-                  className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl border-2 border-dashed border-leaf/40 text-leaf"
-                >
-                  <Plus className="h-5 w-5" />
-                </button>
+          {/* dark control deck */}
+          <div className="bg-ink px-5 pb-8 pt-4 text-white">
+            {oldPhoto && (
+              <div className="mb-4 rounded-2xl bg-white/10 p-3">
+                <p className="text-xs font-bold text-white">This photo was taken yesterday, 19:20.</p>
+                <div className="mt-2.5 flex flex-wrap gap-2">
+                  <button
+                    onClick={() => {
+                      setMealType("Dinner");
+                      setOldPhoto(false);
+                    }}
+                    className="rounded-full bg-lime px-3 py-1.5 text-[11px] font-bold text-ink"
+                  >
+                    Log as yesterday's dinner
+                  </button>
+                  <button
+                    onClick={() => setOldPhoto(false)}
+                    className="rounded-full bg-white/15 px-3 py-1.5 text-[11px] font-bold text-white"
+                  >
+                    Log as today
+                  </button>
+                  <button
+                    onClick={() => setOldPhoto(false)}
+                    className="rounded-full bg-white/15 px-3 py-1.5 text-[11px] font-bold text-white/70"
+                  >
+                    Pick date manually
+                  </button>
+                </div>
               </div>
-              <p className="mt-1.5 text-[11px] text-muted-foreground">
-                {shots.length} photo{shots.length === 1 ? "" : "s"} in this meal · tap to review, × to remove
-              </p>
-            </div>
-          )}
+            )}
 
-          {oldPhoto && (
-            <div className="mx-5 mt-4 rounded-2xl bg-honey-soft p-4">
-              <p className="text-xs font-semibold text-ink">This photo was taken yesterday, 19:20.</p>
-              <div className="mt-2.5 flex flex-wrap gap-2">
-                <button
-                  onClick={() => {
-                    setMealType("Dinner");
-                    setOldPhoto(false);
-                  }}
-                  className="rounded-full bg-lime px-3 py-1.5 text-[11px] font-bold text-ink"
-                >
-                  Log as yesterday's dinner
-                </button>
-                <button
-                  onClick={() => setOldPhoto(false)}
-                  className="rounded-full bg-card px-3 py-1.5 text-[11px] font-semibold text-ink"
-                >
-                  Log as today
-                </button>
-                <button
-                  onClick={() => setOldPhoto(false)}
-                  className="rounded-full bg-card px-3 py-1.5 text-[11px] font-semibold text-muted-foreground"
-                >
-                  Pick date manually
-                </button>
+            {/* photo tray */}
+            {shots.length > 0 && (
+              <div className="mb-4">
+                <div className="flex gap-2 overflow-x-auto pb-1">
+                  {shots.map((s, i) => (
+                    <div key={`${s}-${i}`} className="relative shrink-0">
+                      <button onClick={() => setPreview(s)} aria-label={`Review photo ${i + 1}`}>
+                        <img
+                          src={s}
+                          alt={`Captured photo ${i + 1}`}
+                          className="h-16 w-16 rounded-xl object-cover"
+                        />
+                      </button>
+                      <button
+                        onClick={() => setShots((list) => list.filter((_, n) => n !== i))}
+                        aria-label={`Delete photo ${i + 1}`}
+                        className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-white text-ink"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </div>
+                  ))}
+                  <button
+                    onClick={() => addShot(IMAGES.icedTeaImg)}
+                    aria-label="Add another photo"
+                    className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl border-2 border-dashed border-white/35 text-white/70"
+                  >
+                    <Plus className="h-5 w-5" />
+                  </button>
+                </div>
+                <p className="mt-1.5 text-[11px] text-white/55">
+                  {shots.length} photo{shots.length === 1 ? "" : "s"} in this meal · tap to review, × to remove
+                </p>
               </div>
-            </div>
-          )}
+            )}
 
-          <div className="mt-auto flex flex-col items-center gap-4 px-5 pb-8 pt-6">
-            <div className="flex items-center gap-8">
-              <button onClick={fromGallery} className="flex flex-col items-center gap-1.5 text-muted-foreground">
-                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-card shadow">
-                  <ImageIcon className="h-5 w-5" />
-                </span>
-                <span className="text-[11px] font-medium">Library</span>
+            <p className="text-center text-[13px] text-white/70">
+              Snap a photo — Pola logs the whole meal in seconds.
+            </p>
+
+            <div className="mt-3 flex items-center justify-between">
+              <button
+                onClick={fromGallery}
+                aria-label="Choose from photo library"
+                className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white"
+              >
+                <ImageIcon className="h-5 w-5" />
               </button>
               <button
                 onClick={() => addShot(IMAGES.nasiGulaiImg)}
-                className="h-20 w-20 rounded-full border-[6px] border-card bg-tomato shadow-[0_12px_30px_-6px_rgba(190,80,40,0.55)] transition-transform active:scale-90"
+                className="flex h-[76px] w-[76px] items-center justify-center rounded-full border-4 border-white/30 bg-white text-ink transition-transform active:scale-90"
                 aria-label="Capture photo"
-              />
-              <span className="w-12" />
+              >
+                <Scan className="h-7 w-7" strokeWidth={2.2} />
+              </button>
+              <div className="h-12 w-12" />
             </div>
 
-            {shots.length > 0 ? (
+            {shots.length > 0 && (
               <button
                 onClick={() => onAnalyze(mealType, "photo")}
-                className="w-full rounded-full bg-lime py-4 text-base font-bold text-ink shadow-[0_10px_24px_-8px_rgba(60,90,60,0.5)] transition-transform active:scale-95"
+                className="mt-4 w-full rounded-full bg-lime py-4 text-base font-bold text-ink transition-transform active:scale-95"
               >
                 Continue with {shots.length} photo{shots.length === 1 ? "" : "s"}
               </button>
-            ) : (
-              <p className="max-w-[250px] text-center text-xs text-muted-foreground">
-                Drinks or snacks can be added to the same meal — just add another photo.
-              </p>
             )}
           </div>
         </>
