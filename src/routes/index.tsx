@@ -213,9 +213,9 @@ function PolaApp() {
 
       {/* bottom navigation with capture CTA */}
       {!inFlow && screen.name !== "onboarding" && !(screen.name === "detail" && screen.mealId) && (
-        <nav className="pointer-events-none fixed inset-x-0 bottom-0 z-20 mx-auto max-w-md px-4 pb-6">
-          <div className="pointer-events-auto flex items-center gap-3">
-            <div className="glass flex flex-1 items-center justify-around rounded-full px-2 py-2.5">
+        <nav className="pointer-events-none fixed inset-x-0 bottom-0 z-20 mx-auto max-w-md px-5 pb-7">
+          <div className="pointer-events-auto flex items-center justify-between gap-3">
+            <div className="glass flex items-center gap-1 rounded-full p-1.5">
               {(
                 [
                   { id: "home", label: "Home", Icon: House },
@@ -228,22 +228,22 @@ function PolaApp() {
                   <button
                     key={id}
                     onClick={() => setTab(id)}
+                    aria-label={label}
                     aria-current={active ? "page" : undefined}
-                    className={`flex flex-col items-center gap-0.5 rounded-full px-4 py-1.5 text-[10px] font-semibold transition-colors ${
+                    className={`flex h-[52px] w-[52px] items-center justify-center rounded-full transition-all ${
                       active
-                        ? "bg-foreground/8 text-foreground"
-                        : "text-muted-foreground active:text-foreground"
+                        ? "bg-card text-foreground shadow-[0_4px_12px_-4px_rgba(20,22,25,0.3)]"
+                        : "text-muted-foreground/70 active:text-foreground"
                     }`}
                   >
-                    <Icon className="h-5 w-5" strokeWidth={active ? 2.4 : 1.8} />
-                    {label}
+                    <Icon className="h-[22px] w-[22px]" strokeWidth={active ? 2.6 : 2} fill={active ? "currentColor" : "none"} />
                   </button>
                 );
               })}
             </div>
             <button
               onClick={() => setScreen({ name: "capture" })}
-              className="glass-dark flex h-[60px] w-[60px] shrink-0 items-center justify-center rounded-full text-primary-foreground transition-transform active:scale-90"
+              className="flex h-[62px] w-[62px] shrink-0 items-center justify-center rounded-full bg-ink text-primary-foreground shadow-[0_12px_28px_-10px_rgba(20,22,25,0.7)] transition-transform active:scale-90"
               aria-label="Capture meal"
             >
               <Camera className="h-6 w-6" strokeWidth={2} />
