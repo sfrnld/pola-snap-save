@@ -21,6 +21,12 @@ export function DashboardScreen({
   const weekItems = meals.flatMap((m) => m.items);
   const macros = macrosOf(weekItems);
   const macroTotal = Math.max(1, macros.carbs + macros.protein + macros.fat);
+  const weekDrinks = weekItems.filter((i) => i.drink);
+  const drinkKcal = weekDrinks.reduce((s, i) => s + i.kcal, 0);
+  const weekKcal = weekItems.reduce((s, i) => s + i.kcal, 0);
+  const waterGlasses = meals
+    .filter((m) => m.mealType === "Water")
+    .reduce((s, m) => s + m.items.length, 0);
 
   return (
     <div className="flex flex-1 flex-col px-5 pb-40 pt-8 animate-pola-fade">
