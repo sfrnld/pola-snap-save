@@ -12,6 +12,7 @@ import {
   type MealType,
   type PolaState,
   type StickerBg,
+  WATER_ITEM,
 } from "@/lib/pola-data";
 import { OnboardingScreen } from "@/components/pola/Onboarding";
 import { BudgetSurvey } from "@/components/pola/BudgetSurvey";
@@ -123,6 +124,37 @@ function PolaApp() {
     setScreen({ name: "detail", mealId: meal.id });
   };
 
+  const addWater = () => {
+    setMeals((m) => {
+      const existing = m.find((x) => x.mealType === "Water" && x.dayOffset === 0);
+      if (existing)
+        return m.map((x) =>
+          x.id === existing.id
+            ? { ...x, items: [...x.items, { ...WATER_ITEM, id: `w-${Date.now()}` }] }
+            : x,
+        );
+      return [
+        {
+          id: `meal-${Date.now()}`,
+          title: "Water",
+          mealType: "Water" as MealType,
+          date: "Today",
+          time: nowTime(),
+          dayOffset: 0,
+          image: IMAGES.icedTeaImg,
+          bg: "leaf" as StickerBg,
+          items: [{ ...WATER_ITEM, id: `w-${Date.now()}` }],
+        },
+        ...m,
+      ];
+    });
+  };
+
+  const addForSlot = (type: MealType) => {
+    if (type === "Water") return addWater();
+    setScreen({ name: "capture" });
+  };
+
   const inFlow = screen.name !== "detail" && screen.name !== "onboarding";
 
   return (
@@ -173,6 +205,7 @@ function PolaApp() {
                 onOpenSurvey={() => setSurveyOpen(true)}
                 onOpen={(id) => setScreen({ name: "detail", mealId: id })}
                 onQuickLog={quickLog}
+                onAddMeal={addForSlot}
               />
             );
           return (
@@ -198,6 +231,7 @@ function PolaApp() {
           onOpenSurvey={() => setSurveyOpen(true)}
           onOpen={(id) => setScreen({ name: "detail", mealId: id })}
           onQuickLog={quickLog}
+          onAddMeal={addForSlot}
         />
       )}
 
@@ -264,6 +298,7 @@ function MainTabs({
   onOpenSurvey,
   onOpen,
   onQuickLog,
+  onAddMeal,
 }: {
   tab: Tab;
   setTab: (t: Tab) => void;
@@ -272,6 +307,7 @@ function MainTabs({
   onOpenSurvey: () => void;
   onOpen: (id: string) => void;
   onQuickLog: (m: Meal) => void;
+  onAddMeal: (type: MealType) => void;
 }) {
   if (tab === "library")
     return <LibraryScreen meals={state.meals} onOpen={onOpen} onQuickLog={onQuickLog} />;
@@ -283,6 +319,8 @@ function MainTabs({
       onOpenSurvey={onOpenSurvey}
       onOpen={onOpen}
       onQuickLog={onQuickLog}
+      onAddMeal={onAddMeal}
+      onSeeAll={() => _setTab("library")}
     />
   );
 }

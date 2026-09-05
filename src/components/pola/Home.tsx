@@ -9,26 +9,34 @@ const MEAL_SLOTS: { type: MealType; hint: string }[] = [
   { type: "Lunch", hint: "492 – 656 kcal" },
   { type: "Dinner", hint: "640 – 836 kcal" },
   { type: "Snack", hint: "120 – 260 kcal" },
+  { type: "Water", hint: "8 glasses a day" },
 ];
+
+type Mode = "left" | "eaten";
 
 function MacroCard({
   label,
   used,
   budget,
   bar,
+  mode,
 }: {
   label: string;
   used: number;
   budget: number | null;
   bar: string;
+  mode: Mode;
 }) {
   const pct = budget ? Math.min(100, Math.round((used / budget) * 100)) : 0;
+  const value = mode === "eaten" ? used : Math.max(0, (budget ?? used) - used);
   return (
     <div className="flex-1 rounded-2xl bg-card p-3">
-      <p className="text-[13px] font-bold text-ink">{label}</p>
+      <div className="flex items-baseline justify-between">
+        <p className="text-[13px] font-bold text-ink">{label}</p>
+        <p className="text-[11px] font-bold text-muted-foreground">{pct}%</p>
+      </div>
       <p className="mt-0.5 text-xs text-muted-foreground">
-        {used}
-        {budget ? `/${budget}` : ""}g
+        {value}g {mode === "eaten" ? "eaten" : "left"}
       </p>
       <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-muted">
         <div className={`h-full rounded-full ${bar} transition-all duration-700`} style={{ width: `${pct}%` }} />
@@ -43,20 +51,30 @@ export function HomeScreen({
   onOpenSurvey,
   onOpen,
   onQuickLog,
+  onAddMeal,
+  onSeeAll,
 }: {
   meals: Meal[];
   budget: Budget | null;
   onOpenSurvey: () => void;
   onOpen: (id: string) => void;
   onQuickLog: (meal: Meal) => void;
+  onAddMeal: (type: MealType) => void;
+  onSeeAll: () => void;
 }) {
   const [day, setDay] = useState(0);
+  const [mode, setMode] = useState<Mode>("left");
   const dayMeals = useMemo(() => meals.filter((m) => m.dayOffset === day), [meals, day]);
   const total = dayMeals.reduce((s, m) => s + mealKcal(m), 0);
   const macros = macrosOf(dayMeals.flatMap((m) => m.items));
   const pct = budget ? Math.min(100, (total / budget.kcal) * 100) : 0;
   const recent = meals.slice(0, 3);
   const ring = `conic-gradient(var(--color-lime) ${pct * 3.6}deg, var(--color-muted) 0deg)`;
+  const bigNumber = budget
+    ? mode === "left"
+      ? Math.max(0, budget.kcal - total)
+      : total
+    : total;
 
   return (
     <div className="flex flex-1 flex-col px-5 pb-40 pt-6 animate-pola-fade">
@@ -87,29 +105,54 @@ export function HomeScreen({
       {/* budget card + mascot */}
       <div className="mt-3 rounded-3xl bg-card p-5 shadow-[0_6px_24px_-14px_rgba(20,22,25,0.25)]">
         {budget ? (
-          <div className="flex items-center justify-between gap-3">
-            <div>
-              <p className="font-[family-name:var(--font-display)] text-5xl font-extrabold leading-none text-ink">
-                {Math.max(0, budget.kcal - total).toLocaleString()}
-              </p>
-              <p className="mt-1.5 text-sm text-muted-foreground">Calories left</p>
-              <p className="mt-0.5 text-xs text-muted-foreground">
-                {total.toLocaleString()} of {budget.kcal.toLocaleString()} kcal
-              </p>
+          <>
+            {/* left / eaten switcher */}
+            <div className="flex w-fit gap-1 rounded-full bg-muted p-1">
+              {(
+                [
+                  ["left", "Left"],
+                  ["eaten", "Eaten"],
+                ] as const
+              ).map(([id, label]) => (
+                <button
+                  key={id}
+                  onClick={() => setMode(id)}
+                  className={`rounded-full px-3 py-1 text-[11px] font-bold transition-colors ${
+                    mode === id ? "bg-card text-ink shadow-sm" : "text-muted-foreground"
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
             </div>
-            <div className="relative flex h-24 w-24 shrink-0 items-center justify-center">
-              <div className="absolute inset-0 rounded-full" style={{ background: ring }} />
-              <div className="absolute inset-[8px] rounded-full bg-card" />
-              <img
-                src={mascot}
-                alt="Pola mascot"
-                loading="lazy"
-                width={816}
-                height={816}
-                className="relative h-[4.6rem] w-[4.6rem] object-contain animate-pola-bob drop-shadow-[0_6px_10px_rgba(20,22,25,0.18)]"
-              />
+
+            <div className="mt-3 flex items-center justify-between gap-3">
+              <div>
+                <p className="font-[family-name:var(--font-display)] text-5xl font-extrabold leading-none text-ink">
+                  {bigNumber.toLocaleString()}
+                </p>
+                <p className="mt-1.5 text-sm text-muted-foreground">
+                  {mode === "left" ? "Calories left" : "Calories eaten"}
+                </p>
+                <p className="mt-0.5 text-xs text-muted-foreground">
+                  {total.toLocaleString()} of {budget.kcal.toLocaleString()} kcal ·{" "}
+                  {Math.round(pct)}%
+                </p>
+              </div>
+              <div className="relative flex h-24 w-24 shrink-0 items-center justify-center">
+                <div className="absolute inset-0 rounded-full" style={{ background: ring }} />
+                <div className="absolute inset-[8px] rounded-full bg-card" />
+                <img
+                  src={mascot}
+                  alt="Pola mascot"
+                  loading="lazy"
+                  width={816}
+                  height={816}
+                  className="relative h-[4.6rem] w-[4.6rem] object-contain animate-pola-bob drop-shadow-[0_6px_10px_rgba(20,22,25,0.18)]"
+                />
+              </div>
             </div>
-          </div>
+          </>
         ) : (
           <button onClick={onOpenSurvey} className="flex w-full items-center gap-3 text-left">
             <img
@@ -138,17 +181,22 @@ export function HomeScreen({
 
       {/* macros */}
       <div className="mt-3 flex gap-3">
-        <MacroCard label="Carbs" used={macros.carbs} budget={budget?.carbs ?? null} bar="bg-honey" />
-        <MacroCard label="Protein" used={macros.protein} budget={budget?.protein ?? null} bar="bg-lime" />
-        <MacroCard label="Fat" used={macros.fat} budget={budget?.fat ?? null} bar="bg-leaf" />
+        <MacroCard label="Carbs" used={macros.carbs} budget={budget?.carbs ?? null} bar="bg-honey" mode={mode} />
+        <MacroCard label="Protein" used={macros.protein} budget={budget?.protein ?? null} bar="bg-lime" mode={mode} />
+        <MacroCard label="Fat" used={macros.fat} budget={budget?.fat ?? null} bar="bg-leaf" mode={mode} />
       </div>
 
-      {/* quick log */}
+      {/* recent logs */}
       {recent.length > 0 && (
         <div className="mt-7">
-          <h2 className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
-            Log again
-          </h2>
+          <div className="flex items-baseline justify-between">
+            <h2 className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+              Recent Logs
+            </h2>
+            <button onClick={onSeeAll} className="text-[11px] font-bold text-leaf">
+              See all
+            </button>
+          </div>
           <div className="mt-3 flex gap-3 overflow-x-auto pb-1">
             {recent.map((m) => (
               <button
@@ -175,17 +223,30 @@ export function HomeScreen({
         <div className="mt-3 space-y-3">
           {MEAL_SLOTS.map((slot) => {
             const logged = dayMeals.filter((m) => m.mealType === slot.type);
+            const isWater = slot.type === "Water";
+            const glasses = isWater ? logged.reduce((s, m) => s + m.items.length, 0) : 0;
             return (
               <div key={slot.type} className="rounded-3xl bg-card p-3">
                 <div className="flex items-center gap-3 px-1">
                   <p className="text-[15px] font-bold text-ink">{slot.type}</p>
                   <p className="ml-auto text-xs text-muted-foreground">
                     {logged.length
-                      ? `${logged.reduce((s, m) => s + mealKcal(m), 0)} kcal`
-                      : `Recommended: ${slot.hint}`}
+                      ? isWater
+                        ? `${glasses} glass${glasses === 1 ? "" : "es"}`
+                        : `${logged.reduce((s, m) => s + mealKcal(m), 0)} kcal`
+                      : `${isWater ? "" : "Recommended: "}${slot.hint}`}
                   </p>
+                  {(logged.length === 0 || isWater) && day === 0 && (
+                    <button
+                      onClick={() => onAddMeal(slot.type)}
+                      aria-label={`Add ${slot.type}`}
+                      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-lime text-ink transition-transform active:scale-90"
+                    >
+                      <Plus className="h-4 w-4" strokeWidth={2.6} />
+                    </button>
+                  )}
                 </div>
-                {logged.length > 0 && (
+                {logged.length > 0 && !isWater && (
                   <div className="mt-2 space-y-1">
                     {logged.map((meal) => (
                       <button
@@ -204,6 +265,16 @@ export function HomeScreen({
                           {mealKcal(meal)} kcal
                         </span>
                       </button>
+                    ))}
+                  </div>
+                )}
+                {isWater && glasses > 0 && (
+                  <div className="mt-2 flex gap-1.5 px-1">
+                    {Array.from({ length: 8 }).map((_, i) => (
+                      <span
+                        key={i}
+                        className={`h-6 flex-1 rounded-md ${i < glasses ? "bg-lime" : "bg-muted"}`}
+                      />
                     ))}
                   </div>
                 )}
