@@ -27,7 +27,7 @@ export function DashboardScreen({
       <header>
         <p className="text-xs font-semibold uppercase tracking-widest text-leaf">Intake Dashboard</p>
         <h1 className="font-[family-name:var(--font-display)] text-4xl font-semibold text-ink">
-          Trends
+          Stats
         </h1>
       </header>
 

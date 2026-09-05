@@ -220,7 +220,7 @@ function PolaApp() {
                 [
                   { id: "home", label: "Home", Icon: House },
                   { id: "library", label: "Library", Icon: Album },
-                  { id: "trends", label: "Trends", Icon: ChartColumn },
+                  { id: "trends", label: "Stats", Icon: ChartColumn },
                 ] as const
               ).map(({ id, label, Icon }) => {
                 const active = tab === id;
@@ -230,13 +230,14 @@ function PolaApp() {
                     onClick={() => setTab(id)}
                     aria-label={label}
                     aria-current={active ? "page" : undefined}
-                    className={`flex h-[52px] w-[52px] items-center justify-center rounded-full transition-all ${
+                    className={`flex h-[52px] items-center justify-center gap-1.5 rounded-full px-4 transition-all ${
                       active
                         ? "bg-card text-foreground shadow-[0_4px_12px_-4px_rgba(20,22,25,0.3)]"
                         : "text-muted-foreground/70 active:text-foreground"
                     }`}
                   >
-                    <Icon className="h-[22px] w-[22px]" strokeWidth={active ? 2.6 : 2} fill={active ? "currentColor" : "none"} />
+                    <Icon className="h-[20px] w-[20px]" strokeWidth={active ? 2.6 : 2} fill={active ? "currentColor" : "none"} />
+                    <span className="text-[12px] font-bold">{label}</span>
                   </button>
                 );
               })}
