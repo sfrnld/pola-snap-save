@@ -237,7 +237,7 @@ function PolaApp() {
                     }`}
                   >
                     <Icon className="h-[20px] w-[20px]" strokeWidth={active ? 2.6 : 2} fill={active ? "currentColor" : "none"} />
-                    <span className={`text-[12px] font-bold ${active ? "" : "hidden"}`}>{label}</span>
+                    <span className="text-[12px] font-bold">{label}</span>
                   </button>
                 );
               })}
