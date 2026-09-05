@@ -89,6 +89,63 @@ export function DashboardScreen({
         </div>
       </div>
 
+      {/* calories per meal time */}
+      <div className="mt-4 rounded-3xl bg-card p-5 shadow-[0_6px_24px_-12px_rgba(60,45,30,0.25)]">
+        <h2 className="text-sm font-semibold text-ink">Calories by meal time — today</h2>
+        <div className="mt-3 space-y-2.5">
+          {(["Breakfast", "Lunch", "Dinner", "Snack"] as const).map((t) => {
+            const kcal = meals
+              .filter((m) => m.dayOffset === 0 && m.mealType === t)
+              .reduce((s, m) => s + mealKcal(m), 0);
+            const slotMax = Math.max(
+              1,
+              ...(["Breakfast", "Lunch", "Dinner", "Snack"] as const).map((x) =>
+                meals
+                  .filter((m) => m.dayOffset === 0 && m.mealType === x)
+                  .reduce((s, m) => s + mealKcal(m), 0),
+              ),
+            );
+            return (
+              <div key={t} className="flex items-center gap-3">
+                <p className="w-20 shrink-0 text-xs font-bold text-ink">{t}</p>
+                <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-muted">
+                  <div
+                    className="h-full rounded-full bg-lime transition-all duration-700"
+                    style={{ width: `${(kcal / slotMax) * 100}%` }}
+                  />
+                </div>
+                <p className="w-16 shrink-0 text-right text-xs text-muted-foreground">{kcal} kcal</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* drinks */}
+      <div className="mt-4 rounded-3xl bg-card p-5 shadow-[0_6px_24px_-12px_rgba(60,45,30,0.25)]">
+        <h2 className="text-sm font-semibold text-ink">Drinks</h2>
+        <div className="mt-3 grid grid-cols-3 gap-3">
+          {(
+            [
+              ["Drinks logged", String(weekDrinks.length)],
+              ["Drink calories", `${drinkKcal}`],
+              ["Water glasses", String(waterGlasses)],
+            ] as const
+          ).map(([label, value]) => (
+            <div key={label} className="rounded-2xl bg-muted/60 p-3">
+              <p className="font-[family-name:var(--font-display)] text-2xl font-semibold text-ink">
+                {value}
+              </p>
+              <p className="mt-0.5 text-[11px] leading-tight text-muted-foreground">{label}</p>
+            </div>
+          ))}
+        </div>
+        <p className="mt-3 text-[11px] text-muted-foreground">
+          Sweet drinks are {Math.round((drinkKcal / Math.max(1, weekKcal)) * 100)}% of the calories
+          you logged.
+        </p>
+      </div>
+
       {/* macros */}
       <div className="mt-4 rounded-3xl bg-card p-5 shadow-[0_6px_24px_-12px_rgba(60,45,30,0.25)]">
         <h2 className="text-sm font-semibold text-ink">Macro split — your log</h2>
