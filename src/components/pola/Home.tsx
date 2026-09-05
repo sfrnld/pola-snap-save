@@ -60,6 +60,10 @@ export function HomeScreen({
 
   return (
     <div className="flex flex-1 flex-col px-5 pb-40 pt-6 animate-pola-fade">
+      {/* brand */}
+      <h1 className="text-center text-[26px] font-black tracking-tight text-ink">
+        Pola<span className="text-leaf">.</span>
+      </h1>
       {/* subtle day slider */}
       <div className="flex items-center justify-center gap-2 text-muted-foreground">
         <button

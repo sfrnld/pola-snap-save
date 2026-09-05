@@ -69,7 +69,7 @@
   --color-honey: oklch(0.82 0.14 88);
   --color-honey-soft: oklch(0.95 0.05 92);
   --color-peach: oklch(0.92 0.05 45);
-  --color-ink: oklch(0.18 0.004 250);
+  --color-ink: oklch(0.145 0.003 250);
   --font-display: "Nunito", ui-rounded, system-ui, sans-serif;
   --font-sans: "Nunito", ui-rounded, system-ui, sans-serif;
 }

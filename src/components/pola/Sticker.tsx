@@ -10,9 +10,9 @@ export function StickerFilterDefs() {
     <svg aria-hidden="true" width="0" height="0" className="absolute">
       <defs>
         {[
-          ["pola-cut-sm", 3, 4, 1.1],
-          ["pola-cut-md", 5, 6.5, 1.7],
-          ["pola-cut-lg", 9, 11, 2.8],
+          ["pola-cut-sm", 1.5, 3, 1.1],
+          ["pola-cut-md", 2.5, 4.5, 1.7],
+          ["pola-cut-lg", 4.5, 7, 2.8],
         ].map(([id, white, dark, wobble]) => (
           <filter key={id as string} id={id as string} x="-25%" y="-25%" width="150%" height="150%">
             <feGaussianBlur in="SourceAlpha" stdDeviation={1.4} result="soft" />
