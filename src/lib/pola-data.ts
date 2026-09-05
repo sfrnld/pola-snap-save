@@ -14,7 +14,7 @@ export const CUTOUTS: Record<string, string> = {
 };
 
 export type Serving = "Small" | "Regular" | "Large";
-export type MealType = "Breakfast" | "Brunch" | "Lunch" | "Dinner" | "Snack";
+export type MealType = "Breakfast" | "Brunch" | "Lunch" | "Dinner" | "Snack" | "Water";
 export type StickerBg = "leaf" | "honey" | "peach" | "tomato";
 
 export interface FoodItem {
@@ -256,7 +256,7 @@ export function computeBudget(input: {
 
 /* ---------- storage ---------- */
 
-export const STORAGE_KEY = "pola-state-v2";
+export const STORAGE_KEY = "pola-state-v3";
 
 export interface PolaState {
   meals: Meal[];
@@ -264,9 +264,12 @@ export interface PolaState {
   onboarded: boolean;
 }
 
+/** Everyone starts with a sensible daily budget already set. */
+export const DEFAULT_BUDGET: Budget = { kcal: 2000, carbs: 250, protein: 125, fat: 56 };
+
 export const DEFAULT_STATE: PolaState = {
   meals: SEED_MEALS,
-  budget: null,
+  budget: DEFAULT_BUDGET,
   onboarded: false,
 };
 
@@ -291,4 +294,6 @@ export function mealTypeForNow(hour = new Date().getHours()): MealType {
 export const DAY_LABELS = ["Today", "Yesterday", "2 days ago", "3 days ago"];
 
 /** last 7 days totals for the dashboard (mock trend + live today) */
+export const WATER_ITEM: FoodItem = f("w1", "Water (1 glass)", 0, 0, 0, 0, { drink: true });
+
 export const TREND_BASE = [1780, 1920, 1640, 2050, 1870, 1560];
