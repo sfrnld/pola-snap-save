@@ -278,7 +278,7 @@ function PolaApp() {
             </div>
             <button
               onClick={() => setScreen({ name: "capture" })}
-              className="flex h-[62px] w-[62px] shrink-0 items-center justify-center rounded-full bg-ink text-primary-foreground shadow-[0_12px_28px_-10px_rgba(20,22,25,0.7)] transition-transform active:scale-90"
+              className="glass-ink flex h-[62px] w-[62px] shrink-0 items-center justify-center rounded-full text-primary-foreground transition-transform active:scale-90"
               aria-label="Capture meal"
             >
               <Camera className="h-6 w-6" strokeWidth={2} />
